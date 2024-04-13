@@ -1,18 +1,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 require('flatpickr/dist/themes/material_blue.css');
-
-// all modules
-
 import Notiflix from 'notiflix';
-
-// one by one
-
-// import { Notify } from 'notiflix/build/notiflix-notify-aio';
-// import { Report } from 'notiflix/build/notiflix-report-aio';
-// import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
-// import { Loading } from 'notiflix/build/notiflix-loading-aio';
-// import { Block } from 'notiflix/build/notiflix-block-aio';
 
 const flatpickr = require('flatpickr');
 const startBtn = document.querySelector('[data-start]');
@@ -61,6 +50,8 @@ const options = {
   },
 };
 
+flatpickr('#datetime-picker', options);
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -83,8 +74,6 @@ function convertMs(ms) {
 function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
-
-flatpickr('#datetime-picker', options);
 
 startBtn.addEventListener('click', e => {
   startBtn.setAttribute('disabled', '');
