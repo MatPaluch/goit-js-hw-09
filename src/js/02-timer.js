@@ -1,5 +1,4 @@
 import flatpickr from 'flatpickr';
-const flatpickr = require('flatpickr');
 import 'flatpickr/dist/flatpickr.min.css';
 require('flatpickr/dist/themes/material_blue.css');
 import Notiflix from 'notiflix';
@@ -50,8 +49,11 @@ const options = {
     input.classList.add('change');
   },
 };
-
-flatpickr('#datetime-picker', options);
+try {
+  flatpickr('#datetime-picker', options);
+} catch (error) {
+  console.log(error.message);
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
