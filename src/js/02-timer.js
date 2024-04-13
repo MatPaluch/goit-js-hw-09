@@ -88,6 +88,7 @@ flatpickr('#datetime-picker', options);
 
 startBtn.addEventListener('click', e => {
   startBtn.setAttribute('disabled', '');
+  input.classList.remove('change');
   idInterval = setInterval(() => {
     const convertedTime = convertMs(leftTime);
 
