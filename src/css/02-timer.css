@@ -1,0 +1,58 @@
+.center {
+  display: flex;
+  justify-content: center;
+}
+.timer {
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.value {
+  font-size: 30;
+}
+.label {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.border {
+  border-radius: 10px;
+  border: 2px solid rgb(163, 77, 77);
+  width: 200px;
+  height: 50px;
+  padding: 20px;
+}
+.change {
+  border-color: rgb(27, 126, 224);
+}
+
+#datetime-picker:hover {
+  border-color: rgb(27, 126, 224);
+}
+#datetime-picker:focus {
+  outline-color: rgb(27, 126, 224);
+}
+
+button {
+  padding: 15px 28px;
+  border: 2px solid dodgerblue;
+  border-radius: 10px;
+  background-color: rgb(185, 221, 255);
+  font-weight: 700;
+  color: dodgerblue;
+  cursor: pointer;
+}
+button:hover {
+  background-color: rgb(157, 207, 255);
+}
+button:disabled {
+  background-color: lightcoral;
+  border-color: rgb(163, 77, 77);
+  color: brown;
+  cursor: no-drop;
+}
