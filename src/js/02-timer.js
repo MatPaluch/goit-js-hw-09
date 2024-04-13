@@ -1,4 +1,4 @@
-import flatpickr from 'flatpickr';
+import calendar from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 require('flatpickr/dist/themes/material_blue.css');
 import Notiflix from 'notiflix';
@@ -50,7 +50,7 @@ const options = {
   },
 };
 try {
-  flatpickr('#datetime-picker', options);
+  calendar('#datetime-picker', options);
 } catch (error) {
   console.log(error.message);
 }
