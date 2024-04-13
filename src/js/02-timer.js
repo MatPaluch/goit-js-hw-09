@@ -1,4 +1,5 @@
 import flatpickr from 'flatpickr';
+const flatpickr = require('flatpickr');
 import 'flatpickr/dist/flatpickr.min.css';
 require('flatpickr/dist/themes/material_blue.css');
 import Notiflix from 'notiflix';
