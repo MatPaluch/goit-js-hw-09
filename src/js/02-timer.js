@@ -37,7 +37,6 @@ const options = {
         'Okay'
       );
     } else {
-      startBtn.setAttribute('disabled', '');
       Notiflix.Report.failure(
         'INCORRECT DATE',
         'Please choose a date in the future',
@@ -49,11 +48,6 @@ const options = {
     input.classList.add('change');
   },
 };
-try {
-  calendar('#datetime-picker', options);
-} catch (error) {
-  console.log(error.message);
-}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -78,19 +72,31 @@ function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
 
+try {
+  calendar('#datetime-picker', options);
+} catch (error) {
+  console.log(error.message);
+}
+
 startBtn.addEventListener('click', e => {
   startBtn.setAttribute('disabled', '');
   input.classList.remove('change');
+  if (idInterval) {
+    clearInterval(idInterval);
+  }
+  let currentLeftTime = leftTime;
+
   idInterval = setInterval(() => {
-    const convertedTime = convertMs(leftTime);
+    const convertedTime = convertMs(currentLeftTime);
 
     days.textContent = addLeadingZero(convertedTime.days);
     hours.textContent = addLeadingZero(convertedTime.hours);
     minutes.textContent = addLeadingZero(convertedTime.minutes);
     seconds.textContent = addLeadingZero(convertedTime.seconds);
 
-    leftTime = leftTime - 1000;
-    if (leftTime <= 0) {
+    currentLeftTime = currentLeftTime - 1000;
+
+    if (currentLeftTime <= 0) {
       clearInterval(idInterval);
     }
   }, 1000);
