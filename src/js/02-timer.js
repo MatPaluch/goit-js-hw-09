@@ -6,6 +6,9 @@ import Notiflix from 'notiflix';
 const flatpickr = require('flatpickr');
 const startBtn = document.querySelector('[data-start]');
 const resetBtn = document.querySelector('[data-stop]');
+const audioStart = document.querySelector('[data-str]');
+const audioEnd = document.querySelector('[data-end]');
+
 startBtn.setAttribute('disabled', '');
 resetBtn.setAttribute('disabled', '');
 
@@ -19,6 +22,8 @@ input.classList.add('border');
 let leftTime = null;
 let idInterval = null;
 let selTime = null;
+
+const losu = ['tada.mp3', 'ricky.mp3', 'money.mp3', 'taco_bell.mp3'];
 
 const options = {
   enableTime: true,
@@ -77,10 +82,8 @@ function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
 
-function musicStart() {
-  const audio = new Audio('kahoot-song.mp3');
-  audio.play();
-}
+// In browsers that don’t yet support this functionality,
+// playPromise won’t be defined.
 
 try {
   calendar('#datetime-picker', options);
@@ -89,7 +92,6 @@ try {
 }
 
 startBtn.addEventListener('click', e => {
-  musicStart();
   startBtn.setAttribute('disabled', '');
   resetBtn.removeAttribute('disabled');
   input.classList.remove('change');
@@ -97,7 +99,6 @@ startBtn.addEventListener('click', e => {
     clearInterval(idInterval);
   }
   const today = new Date().getTime();
-
   let currentLeftTime = selTime - today;
 
   idInterval = setInterval(() => {
@@ -110,17 +111,27 @@ startBtn.addEventListener('click', e => {
 
     currentLeftTime = currentLeftTime - 1000;
 
-    if (currentLeftTime <= 0) {
-      startBtn.setAttribute('disabled', '');
+    if (seconds.textContent === String(Math.round(audioStart.duration))) {
+      audioStart.play();
+    }
+    if (seconds.textContent === '00') {
       clearInterval(idInterval);
     }
   }, 1000);
 });
+
 resetBtn.addEventListener('click', () => {
-  startBtn.removeAttribute('disabled');
+  if (selTime > new Date().getTime()) {
+    startBtn.removeAttribute('disabled');
+  }
+
   clearInterval(idInterval);
   days.textContent = '00';
   hours.textContent = '00';
   minutes.textContent = '00';
   seconds.textContent = '00';
+});
+
+audioStart.addEventListener('ended', function () {
+  audioEnd.play();
 });
