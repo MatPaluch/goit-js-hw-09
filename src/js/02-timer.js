@@ -5,7 +5,9 @@ import Notiflix from 'notiflix';
 
 const flatpickr = require('flatpickr');
 const startBtn = document.querySelector('[data-start]');
+const resetBtn = document.querySelector('[data-stop]');
 startBtn.setAttribute('disabled', '');
+resetBtn.setAttribute('disabled', '');
 
 const days = document.querySelector('[data-days]');
 const hours = document.querySelector('[data-hours]');
@@ -16,6 +18,7 @@ input.classList.add('border');
 
 let leftTime = null;
 let idInterval = null;
+let selTime = null;
 
 const options = {
   enableTime: true,
@@ -28,6 +31,7 @@ const options = {
   onClose(selectedDates) {
     const today = new Date().getTime();
     const selectedTime = selectedDates[0].getTime();
+    selTime = selectedTime;
     if (selectedTime - today > 0) {
       startBtn.removeAttribute('disabled');
       leftTime = selectedTime - today;
@@ -37,6 +41,7 @@ const options = {
         'Okay'
       );
     } else {
+      startBtn.setAttribute('disabled', '');
       Notiflix.Report.failure(
         'INCORRECT DATE',
         'Please choose a date in the future',
@@ -72,6 +77,11 @@ function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
 
+function musicStart() {
+  const audio = new Audio('kahoot-song.mp3');
+  audio.play();
+}
+
 try {
   calendar('#datetime-picker', options);
 } catch (error) {
@@ -79,12 +89,16 @@ try {
 }
 
 startBtn.addEventListener('click', e => {
+  musicStart();
   startBtn.setAttribute('disabled', '');
+  resetBtn.removeAttribute('disabled');
   input.classList.remove('change');
   if (idInterval) {
     clearInterval(idInterval);
   }
-  let currentLeftTime = leftTime;
+  const today = new Date().getTime();
+
+  let currentLeftTime = selTime - today;
 
   idInterval = setInterval(() => {
     const convertedTime = convertMs(currentLeftTime);
@@ -97,7 +111,16 @@ startBtn.addEventListener('click', e => {
     currentLeftTime = currentLeftTime - 1000;
 
     if (currentLeftTime <= 0) {
+      startBtn.setAttribute('disabled', '');
       clearInterval(idInterval);
     }
   }, 1000);
+});
+resetBtn.addEventListener('click', () => {
+  startBtn.removeAttribute('disabled');
+  clearInterval(idInterval);
+  days.textContent = '00';
+  hours.textContent = '00';
+  minutes.textContent = '00';
+  seconds.textContent = '00';
 });
