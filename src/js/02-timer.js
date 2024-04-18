@@ -102,21 +102,22 @@ startBtn.addEventListener('click', e => {
   let currentLeftTime = selTime - today;
 
   idInterval = setInterval(() => {
+    if (
+      Math.floor(currentLeftTime / 1000) === Math.floor(audioStart.duration)
+    ) {
+      audioStart.play();
+    }
     const convertedTime = convertMs(currentLeftTime);
-
     days.textContent = addLeadingZero(convertedTime.days);
     hours.textContent = addLeadingZero(convertedTime.hours);
     minutes.textContent = addLeadingZero(convertedTime.minutes);
     seconds.textContent = addLeadingZero(convertedTime.seconds);
 
-    currentLeftTime = currentLeftTime - 1000;
-
-    if (seconds.textContent === String(Math.round(audioStart.duration))) {
-      audioStart.play();
-    }
-    if (seconds.textContent === '00') {
+    if (Math.floor(currentLeftTime / 1000) === 0) {
       clearInterval(idInterval);
     }
+
+    currentLeftTime -= 1000;
   }, 1000);
 });
 
