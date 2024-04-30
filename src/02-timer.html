@@ -10,33 +10,41 @@
   <body>
     <p><a href="index.html">Go back</a></p>
     <div class="center">
-      <div>
+      <div class="controls">
         <input type="text" id="datetime-picker" />
-        <button type="button" data-start>Start</button>
-        <button type="button" data-stop>Reset</button>
-
-        <div class="timer">
-          <div class="field">
-            <span class="value" data-days>00</span>
-            <span class="label">Days</span>
-          </div>
-          <div class="field">
-            <span class="value" data-hours>00</span>
-            <span class="label">Hours</span>
-          </div>
-          <div class="field">
-            <span class="value" data-minutes>00</span>
-            <span class="label">Minutes</span>
-          </div>
-          <div class="field">
-            <span class="value" data-seconds>00</span>
-            <span class="label">Seconds</span>
-          </div>
+        <div class="buttons">
+          <button type="button" data-start disabled>Start</button>
+          <button type="button" data-stop disabled>Reset</button>
         </div>
       </div>
+
+      <div class="timer">
+        <div class="field">
+          <span class="value" data-days>00</span>
+          <span class="label">Days</span>
+        </div>
+
+        <div class="field">
+          <span class="value" data-hours>00</span>
+          <span class="label">Hours</span>
+        </div>
+
+        <div class="field">
+          <span class="value" data-minutes>00</span>
+          <span class="label">Minutes</span>
+        </div>
+
+        <div class="field">
+          <span class="value" data-seconds>00</span>
+          <span class="label">Seconds</span>
+        </div>
+      </div>
+
+      <img src="raccoon-dance.gif" class="pedro hidden" />
     </div>
-    <audio src="kahoot-song.mp3" data-str></audio>
-    <audio src="taco-bell.mp3" data-end></audio>
+    <audio src="pedro.mp3" data-pedro></audio>
+    <audio src="kahoot-song.mp3" data-kahoot></audio>
+    <audio src="taco-bell.mp3" data-bell></audio>
 
     <script src="js/02-timer.js" type="module"></script>
   </body>

@@ -6,11 +6,10 @@ import Notiflix from 'notiflix';
 const flatpickr = require('flatpickr');
 const startBtn = document.querySelector('[data-start]');
 const resetBtn = document.querySelector('[data-stop]');
-const audioStart = document.querySelector('[data-str]');
-const audioEnd = document.querySelector('[data-end]');
-
-startBtn.setAttribute('disabled', '');
-resetBtn.setAttribute('disabled', '');
+const audioKahoot = document.querySelector('[data-kahoot]');
+const audioBell = document.querySelector('[data-bell]');
+const pedro = document.querySelector('[data-pedro]');
+const pedroGif = document.querySelector('.pedro');
 
 const days = document.querySelector('[data-days]');
 const hours = document.querySelector('[data-hours]');
@@ -19,9 +18,8 @@ const seconds = document.querySelector('[data-seconds]');
 const input = document.querySelector('#datetime-picker');
 input.classList.add('border');
 
-let leftTime = null;
 let idInterval = null;
-let selTime = null;
+let selectedTime = null;
 
 const losu = ['tada.mp3', 'ricky.mp3', 'money.mp3', 'taco_bell.mp3'];
 
@@ -35,11 +33,12 @@ const options = {
   },
   onClose(selectedDates) {
     const today = new Date().getTime();
-    const selectedTime = selectedDates[0].getTime();
-    selTime = selectedTime;
-    if (selectedTime - today > 0) {
+    selectedTime = selectedDates[0].getTime();
+    const leftTime = selectedTime - today;
+    if (leftTime > 0) {
       startBtn.removeAttribute('disabled');
-      leftTime = selectedTime - today;
+      input.classList.toggle('change');
+      input.classList.add('correct');
       Notiflix.Report.success(
         'CORRECT DATE',
         '"Now time will pass ;)"',
@@ -53,15 +52,16 @@ const options = {
         'Okay'
       );
     }
+    input.classList.toggle('change');
   },
   onOpen() {
-    input.classList.add('change');
+    input.classList.toggle('change');
   },
 };
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
-  const second = 1000;
+  const second = 1;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
@@ -92,47 +92,66 @@ try {
 }
 
 startBtn.addEventListener('click', e => {
+  input.classList.remove('change');
+  input.classList.remove('correct');
   startBtn.setAttribute('disabled', '');
   resetBtn.removeAttribute('disabled');
-  input.classList.remove('change');
+
   if (idInterval) {
     clearInterval(idInterval);
   }
+
   const today = new Date().getTime();
-  let currentLeftTime = selTime - today;
+  let currentLeftTime = selectedTime - today;
 
-  idInterval = setInterval(() => {
-    if (
-      Math.floor(currentLeftTime / 1000) === Math.floor(audioStart.duration)
-    ) {
-      audioStart.play();
-    }
-    const convertedTime = convertMs(currentLeftTime);
-    days.textContent = addLeadingZero(convertedTime.days);
-    hours.textContent = addLeadingZero(convertedTime.hours);
-    minutes.textContent = addLeadingZero(convertedTime.minutes);
-    seconds.textContent = addLeadingZero(convertedTime.seconds);
+  currentLeftTime = Math.round(currentLeftTime / 1000);
+  console.log(currentLeftTime);
 
-    if (Math.floor(currentLeftTime / 1000) === 0) {
-      clearInterval(idInterval);
-    }
+  if (currentLeftTime > 0) {
+    idInterval = setInterval(() => {
+      console.log(currentLeftTime);
+      if (currentLeftTime === 42) {
+        pedro.play();
+        pedroGif.classList.toggle('hidden');
+      }
 
-    currentLeftTime -= 1000;
-  }, 1000);
+      const convertedTime = convertMs(currentLeftTime);
+
+      days.textContent = addLeadingZero(convertedTime.days);
+      hours.textContent = addLeadingZero(convertedTime.hours);
+      minutes.textContent = addLeadingZero(convertedTime.minutes);
+      seconds.textContent = addLeadingZero(convertedTime.seconds);
+
+      if (currentLeftTime === 0) {
+        //audioBell.play();
+        resetBtn.setAttribute('disabled', '');
+        startBtn.setAttribute('disabled', '');
+        clearInterval(idInterval);
+      }
+
+      currentLeftTime -= 1;
+    }, 1000);
+  } else {
+    Notiflix.Report.failure(
+      'TIME OUT',
+      'Please choose a date in the future',
+      'Okay'
+    );
+  }
 });
 
 resetBtn.addEventListener('click', () => {
-  if (selTime > new Date().getTime()) {
+  if (selectedTime > new Date().getTime()) {
     startBtn.removeAttribute('disabled');
   }
-
+  pedro.pause();
+  resetBtn.setAttribute('disabled', '');
   clearInterval(idInterval);
+
   days.textContent = '00';
   hours.textContent = '00';
   minutes.textContent = '00';
   seconds.textContent = '00';
 });
 
-audioStart.addEventListener('ended', function () {
-  audioEnd.play();
-});
+pedro.addEventListener('end', () => pedroGif.classList.add('hidden'));
