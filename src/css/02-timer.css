@@ -94,3 +94,17 @@ button:last-of-type:disabled {
 .hidden {
   display: none;
 }
+.bum {
+  animation: bounce 400ms infinite ease;
+}
+@keyframes bounce {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.2;
+  }
+  100% {
+    scale: 1;
+  }
+}

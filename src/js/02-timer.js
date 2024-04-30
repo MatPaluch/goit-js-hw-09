@@ -108,6 +108,12 @@ startBtn.addEventListener('click', e => {
   console.log(currentLeftTime);
 
   if (currentLeftTime > 0) {
+    if (currentLeftTime < 42) {
+      pedro.currentTime = 41 - currentLeftTime;
+      pedro.play();
+      pedroGif.classList.toggle('hidden');
+    }
+
     idInterval = setInterval(() => {
       console.log(currentLeftTime);
       if (currentLeftTime === 42) {
@@ -126,7 +132,9 @@ startBtn.addEventListener('click', e => {
         //audioBell.play();
         resetBtn.setAttribute('disabled', '');
         startBtn.setAttribute('disabled', '');
+        pedroGif.classList.add('bum');
         clearInterval(idInterval);
+        setTimeout(() => pedroGif.classList.add('hidden'), 80000);
       }
 
       currentLeftTime -= 1;
@@ -144,6 +152,7 @@ resetBtn.addEventListener('click', () => {
   if (selectedTime > new Date().getTime()) {
     startBtn.removeAttribute('disabled');
   }
+  pedroGif.classList.add('hidden');
   pedro.pause();
   resetBtn.setAttribute('disabled', '');
   clearInterval(idInterval);
@@ -153,5 +162,3 @@ resetBtn.addEventListener('click', () => {
   minutes.textContent = '00';
   seconds.textContent = '00';
 });
-
-pedro.addEventListener('end', () => pedroGif.classList.add('hidden'));
